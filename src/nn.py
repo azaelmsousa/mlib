@@ -1,22 +1,24 @@
 import numpy as np
-import functions as f
+from src import functions as f
 
 class nn:
 
-	def __init__(self, input_layer):
-		self.layers = [input_layer]
-		self.nlayers = 1;
+	def __init__(self):
+		self.layers = []
+		self.n_layers = 0
 
 	def add(self,layer):
-		if (self.layers[-1].getNumNodes() != layer.getNodesPreviousLayer()):
-			print("Error on class nn, method add: Number of nodes of current layer must be equal to the previous one")
-			exit()
+		if (self.n_layers > 0):
+			if (self.layers[-1].getNumNodes() != layer.getNodesPreviousLayer()):
+				print("Error on class nn, method add: Number of nodes of current layer must be equal to the previous one")
+				exit()
 		self.layers.append(layer)
-		self.nlayers += 1
+		self.n_layers += 1
 
 	def forward(self,x):
 		x_ = np.copy(x)
 		for l in self.layers:
+			x_aux = np.array([[]])
 			for n in l.nodes:
 				w = n.getWeights()
 				s = np.matmul(x_,w)
@@ -24,15 +26,21 @@ class nn:
 					a = getattr(f,l.getActivation())(s)
 				else:
 					a = s
-				#join outputs of each node
+				x_aux = np.append(x_aux,[a],0)
+			x_ = np.copy(x_aux)
 		return 
 
 	def showArchitecture(self):
 		print("##############################################")
-		for i in range(self.nlayers):
+		for i in range(self.n_layers):
 			print("Layer:",self.layers[i].getName()," -",
+				           self.layers[i].getNodesPreviousLayer(),"->",
 				           self.layers[i].getNumNodes(),"nodes ("+
 				           self.layers[i].getActivation()+")")
+			print("Nodes:")
+			for j in range(self.layers[i].getNumNodes()):
+				print(self.layers[i].nodes[j].getWeights())
+			print("\n")
 		print("##############################################")
 
 
@@ -44,8 +52,6 @@ class layer:
 		self.activation = activation
 		self.n_nodes_previous_layer = n_nodes_previous_layer
 		self.nodes = []
-		self.input = []
-
 		for i in range(n_nodes):
 			self.nodes.append(node(n_nodes_previous_layer+1,weights))
 
@@ -67,8 +73,8 @@ class layer:
 	def getNodesPreviousLayer(self):
 		return self.n_nodes_previous_layer
 
-	def setInputData(self, input_data):
-		self.input = input_data
+	def getNodes(self):
+		return self.nodes
 
 class node:
 
