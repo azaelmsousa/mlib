@@ -5,7 +5,7 @@ import sys
 sys.path.append('../')
 from src import nn
 
-
+'''
 df_data = pd.read_csv("../data/fashion-mnist_test.csv")
 print(df_data.head(10))
 data = df_data.values
@@ -23,13 +23,14 @@ ann.loadInput(data)
 
 classes = ann.forward()
 print(classes)
+'''
 
 #------------------------------------------
 #               Toy Example
 #------------------------------------------
 
 '''
-data = np.array([0.05,0.1])
+data = np.array([[0.05,0.1]])
 
 w1 = [np.array([0.35,0.15,0.20]),np.array([0.35,0.25,0.30])]
 hl1 = nn.layer(2,2,'sigmoid','Hidden Layer 01',weights=w1)
@@ -40,7 +41,8 @@ lo = nn.layer(2,2,'sigmoid','Output Layer',weights=w2)
 ann = nn.nn()
 ann.add(hl1)
 ann.add(lo)
+ann.loadInput(data)
 
-classes = ann.forwardSamples(data)
+classes = ann.forward()
 print(classes)
 '''

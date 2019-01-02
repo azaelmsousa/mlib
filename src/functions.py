@@ -2,6 +2,11 @@ import numpy as np
 import math
 
 possibleActivations = ['ReLU','sigmoid','tanh','softmax']
+possibleLoss = ['crossEntropy']
+
+#--------------------------------------------------------
+#                   Activation Functions
+#--------------------------------------------------------
 
 def ReLU(x):
 	y = np.zeros(x.shape)
@@ -29,3 +34,18 @@ def softmax(x):
 	x = np.exp(x,dtype=np.float128)
 	out = x / np.sum(x,axis=1,keepdims=True)
 	return out
+
+#--------------------------------------------------------
+#                     Loss Functions
+#--------------------------------------------------------
+
+def crossEntropy(y_pred,y):
+	# note that y must be the one hot enconding of the original class
+	ln_y = np.log(y_pred)
+	loss = np.matmul(ln_y,y)
+	return loss
+
+
+
+
+

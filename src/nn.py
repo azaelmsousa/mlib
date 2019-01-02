@@ -22,7 +22,7 @@ class nn:
 		aux = np.insert(input_data,0,1,axis=1)
 		self.input_data = aux
 
-	def forwardSamples(self,x):
+	def forwardSample(self,x):
 		x_ = np.insert(x,0,1)
 		for l in self.layers:
 			x_s = []
@@ -63,6 +63,12 @@ class nn:
 			x_ = np.copy(a)
 		output = np.delete(x_,0,axis=1) #removing bias
 		return output
+
+	def backpropagation():
+		return
+
+	def training():
+		return
 
 	def predict(self):
 		output = self.forward()
